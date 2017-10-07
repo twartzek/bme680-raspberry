@@ -1,3 +1,22 @@
+ /******************************
+ * Copyright (C) 2017 by Tobias Wartzek  
+ * @file	bme680_main.c
+ * @date	07.10.2017
+ * @version	1.0
+ * @brief Interface to BME680 from Raspberry Pi
+ * 
+ * 
+ * Read out temperature, pressure, humidity and gas sensor ohmic values 
+ * via I²C and Raspberry Pi.
+ * 
+ * History
+ * Version		Date		Detail
+ * 1.0			07.10.2017 	Initial creation
+ * 
+ ******************************/
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -46,10 +65,6 @@ void i2cSetAddress(int address)
 
 void user_delay_ms(uint32_t period)
 {
-    /*
-     * Return control or wait,
-     * for a period amount of milliseconds
-     */
 
     sleep(period/1000);
 
@@ -60,26 +75,6 @@ void user_delay_ms(uint32_t period)
 int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len)
 {
     int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
-
-    /*
-     * The parameter dev_id can be used as a variable to store the I2C address of the device
-     */
-
-    /*
-     * Data on the bus should be like
-     * |------------+---------------------|
-     * | I2C action | Data                |
-     * |------------+---------------------|
-     * | Start      | -                   |
-     * | Write      | (reg_addr)          |
-     * | Stop       | -                   |
-     * | Start      | -                   |
-     * | Read       | (reg_data[0])       |
-     * | Read       | (....)              |
-     * | Read       | (reg_data[len - 1]) |
-     * | Stop       | -                   |
-     * |------------+---------------------|
-     */
 
     uint8_t reg[1];
 	reg[0]=reg_addr;
@@ -100,9 +95,6 @@ int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint1
 {
     int8_t rslt = 0; /* Return 0 for Success, non-zero for failure */
 
-    /*
-     * The parameter dev_id can be used as a variable to store the I2C address of the device
-     */
 
 	uint8_t reg[16];
     reg[0]=reg_addr;
@@ -116,31 +108,13 @@ int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint1
         exit(1);
 	}
 
-
-    /*
-     * Data on the bus should be like
-     * |------------+---------------------|
-     * | I2C action | Data                |
-     * |------------+---------------------|
-     * | Start      | -                   |
-     * | Write      | (reg_addr)          |
-     * | Write      | (reg_data[0])       |
-     * | Write      | (....)              |
-     * | Write      | (reg_data[len - 1]) |
-     * | Stop       | -                   |
-     * |------------+---------------------|
-     */
-
     return rslt;
 }
 
 
 void write2file(char *outputFile, struct tm tm, struct bme680_field_data data)
 {
-	 /*
-     * Write measurements to file, specified via command line arguments
-     */
-
+	// Write measurement to output file if specified.
 	if(outputFile != NULL)
 	{
 		FILE *f = fopen(outputFile, "a");
@@ -164,7 +138,7 @@ void write2file(char *outputFile, struct tm tm, struct bme680_field_data data)
 
 int main(int argc, char *argv[] )
 {
-
+	// create lock file first
 	FILE *f = fopen("~bme680i2c.lock", "w");
 	if (f == NULL)
 	{
@@ -179,6 +153,7 @@ int main(int argc, char *argv[] )
 	int nMeas = 3;
 	char *outputFile = NULL;
 
+	// Input argument parser
 	if( argc == 2 ) {
 		delay = strtol(argv[1], NULL, 10);
 	}
@@ -199,7 +174,7 @@ int main(int argc, char *argv[] )
 	printf("**** BME680 start measurements  ****\n");
 
 	time_t t = time(NULL);
-    putenv(DESTZONE);                               // Switch to destination time zone
+    putenv(DESTZONE);               // Switch to destination time zone
 
 
     // open Linux I2C device
