@@ -1,10 +1,11 @@
-# Introduction
+# BME680 interface with Raspberry Pi
+## Introduction
 
 This program serves as a working example to read the measurements from a BME680 via the raspberry pi. Actually I wanted to read out the sensor via python, but as the driver provided by Bosch is a C file, I created this small C program to communicate to the sensor. The compile program can then be called from python. 
 
 
-# Usage guide
-## Compiling the program
+## Usage guide
+### Compiling the program
 Download the driver for the [BME680](https://github.com/BoschSensortec/BME680_driver) from github.
 Put the file from this repository into the same directory.
 
@@ -15,7 +16,7 @@ After this adaption you can compile the program with
 `gcc bme680_main.c bme680.c -o bme680`
 
 
-## Command line interface 
+### Command line interface 
 The program can be called with up to three parameters. However, be aware that no special input check is implemented.
 1. `./bme680`: This will print three measurement results with the time of the measurement on the standard output stream. The delay between each measurement is 3 seconds.
 ```shell
@@ -38,7 +39,7 @@ pi@raspberrypi:~/myproject/sensors/bme680 $
 ```
 3. `./bme680 5 2 output.txt`: You can also provide a third argument, which will be used to write the measurements into a file.
 
-## Usage within Python
+### Usage within Python
 If you want to use this program in python, you can simply call it with `check_output`.
 
 ```python
