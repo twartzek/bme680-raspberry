@@ -126,7 +126,7 @@ void write2file(char *outputFile, struct tm tm, struct bme680_field_data data)
 		else
 		{
 			fprintf(f,"%d-%02d-%02d %02d:%02d:%02d ", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-			fprintf(f,"T: %.2f degC, P: %.2f hPa, H %.2f %%rH ", data.temperature / 100.0f,
+			fprintf(f,"T: %.2f degC, P: %.2f hPa, H %.2f %%rH", data.temperature / 100.0f,
 					data.pressure / 100.0f, data.humidity / 1000.0f );
 			fprintf(f,", G: %d ohms", data.gas_resistance);
 			fprintf(f,"\r\n");
@@ -250,7 +250,7 @@ int main(int argc, char *argv[] )
 			t = time(NULL);
 			tm = *localtime(&t);
 			printf("%d-%02d-%02d %02d:%02d:%02d ", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-			printf("T: %.2f degC, P: %.2f hPa, H: %.2f %%rH ", data.temperature / 100.0f,
+			printf("T: %.2f degC, P: %.2f hPa, H: %.2f %%rH", data.temperature / 100.0f,
 					data.pressure / 100.0f, data.humidity / 1000.0f );
 			printf(", G: %d ohms", data.gas_resistance);
 			printf("\r\n");
